@@ -1,0 +1,89 @@
+SWITCH VLANS 
+
+
+
+enable
+configure terminal
+vlan 10
+vlan 20
+vlan 30
+vlan 40
+interface f0/18
+switchport mode access
+switchport access vlan 30
+exit
+interface f0/22
+switchport mode access
+switchport access vlan 30
+exit
+interface f0/24
+switchport mode access
+switchport access vlan 30
+exit
+interface f0/14
+switchport mode access
+switchport access vlan 20
+exit
+interface f0/15
+switchport mode access
+switchport access vlan 20
+exit
+interface f0/16
+switchport mode access
+switchport access vlan 20
+exit
+interface f0/17
+switchport mode access
+switchport access vlan 20
+exit
+no shutdown 
+do wr
+interface f0/8
+switchport mode access
+switchport access vlan 10
+exit
+interface f0/9
+switchport mode access
+switchport access vlan 10
+no shutdown
+do wr
+
+
+ROUTER 
+
+enable
+configure terminal
+hostname R4
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+password SenhadaVTY
+login
+transport input ssh
+exec-timeout 10
+exit
+username ericksoares privilege 15 secret 49822
+username  privilege 1 secret 49822
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+interface Serial0/1/1
+ip address 200.187.89.21 255.255.255.252
+Description REDE 1
+no shutdown
+exit
+interface Serial0/0/0
+ip address 201.187.89.9 255.255.255.252 
+Description REDE 2
+no shutdown
+exit
+interface Serial0/0/1
+ip address 201.187.89.13 255.255.255.252
+Description REDE 3
+no shutdown
+exit
+do wr
