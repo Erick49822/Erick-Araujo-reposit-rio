@@ -1,0 +1,410 @@
+SWITCH VLANS 
+
+
+S1 Vlan
+
+
+enable
+configure terminal
+vlan 10
+vlan 20
+vlan 30
+vlan 40
+interface range f0/1-9
+switchport mode access
+switchport access vlan 10
+exit
+interface range f0/10-17
+switchport mode access
+switchport access vlan 20
+exit
+interface f0/18
+switchport mode access
+switchport access vlan 30
+exit
+interface f0/22
+switchport mode access
+switchport access vlan 30
+exit
+interface f0/24
+switchport mode access
+switchport access vlan 30
+exit
+interface range f0/19-21
+switchport mode access
+switchport access vlan 40
+exit
+interface f0/23
+switchport mode access
+switchport access vlan 40
+exit
+no shutdown 
+do wr
+
+S1 Configurações
+
+hostname S1
+banner motd "ACESSO AUTORIZADO APENAS PARA O DEPARTAMENTO DE TI!"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+username ericksoares privilege 15 secret 49822
+username estagiario privilege 1 secret senha
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+line vty 0 15
+password SenhadaVTY
+transport input ssh
+exec-timeout 10
+login local
+exit
+interface vlan 1
+ip address 192.168.0.254 255.255.224.0
+description INTERFACE DE GERENCIAMENTO
+no shutdown
+exit
+ip default-gateway 192.168.0.1
+do wr
+
+S2 Vlan
+
+
+enable
+configure terminal
+vlan 50
+vlan 60
+vlan 70
+vlan 80
+interface range f0/1-20
+switchport mode access
+switchport access vlan 50
+exit
+interface f0/24
+switchport mode access
+switchport access vlan 60
+exit
+interface f0/21
+switchport mode access
+switchport access vlan 70
+exit
+interface f0/23
+switchport mode access
+switchport access vlan 70
+exit
+interface f0/22
+switchport mode access
+switchport access vlan 80
+do wr
+
+S2 Configurações
+
+enable
+configure terminal
+hostname S2
+banner motd "ACESSO AUTORIZADO APENAS PARA O DEPARTAMENTO DE TI!"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+username ericksoares privilege 15 secret 49822
+username estagiario privilege 1 secret senha
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+line vty 0 15
+password SenhadaVTY
+transport input ssh
+exec-timeout 10
+login local
+exit
+interface vlan 1
+ip address 10.0.0.254 255.0.0.0
+description INTERFACE DE GERENCIAMENTO
+no shutdown
+exit
+ip default-gateway 10.0.0.1
+do wr
+
+S3 vlans
+
+enable
+configure terminal
+vlan 80
+vlan 60
+vlan 88
+vlan 100
+interface range f0/1-5
+switchport mode access
+switchport access vlan 80
+exit
+interface range f0/6-9
+switchport mode access
+switchport access vlan 60
+exit
+interface range f0/10-19
+switchport mode access 
+switchport access vlan 88
+exit
+interface range f0/20-24
+switchport mode access
+switchport access vlan 100
+exit
+do wr
+
+
+S3 Configurações
+
+enable
+configure terminal
+hostname S3
+banner motd "ACESSO AUTORIZADO APENAS PARA O DEPARTAMENTO DE TI!"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+username ericksoares privilege 15 secret 49822
+username estagiario privilege 1 secret senha
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+line vty 0 15
+password SenhadaVTY
+transport input ssh
+exec-timeout 10
+login local
+exit
+interface vlan 1
+ip address 192.168.32.254 255.255.248.0
+description INTERFACE DE GERENCIAMENTO
+no shutdown
+exit
+ip default-gateway 192.168.32.1
+do wr
+
+S4 vlans
+
+enable
+configure terminal
+vlan 88
+vlan 200
+vlan 90
+interface range f0/1-9
+switchport mode access 
+switchport access vlan 88
+exit
+interface range f0/10-12
+switchport mode access
+switchport access vlan 200
+exit
+interface range f0/13-14
+switchport mode access
+switchport access vlan 90
+exit
+interface range f0/15-24
+switchport mode access
+switchport access vlan 88
+exit
+do wr
+
+S4 Configurações
+
+enable
+configure terminal
+hostname S4
+banner motd "ACESSO AUTORIZADO APENAS PARA O DEPARTAMENTO DE TI!"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+username ericksoares privilege 15 secret 49822
+username estagiario privilege 1 secret senha
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+line vty 0 15
+password SenhadaVTY
+transport input ssh
+exec-timeout 10
+login local
+exit
+interface vlan 1
+ip address 172.16.0.254 255.255.248.0
+description INTERFACE DE GERENCIAMENTO
+no shutdown
+exit
+ip default-gateway 172.16.0.1
+do wr
+
+ROUTER 
+
+enable
+configure terminal
+hostname R1
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+password SenhadaVTY
+login
+transport input ssh
+exec-timeout 10
+exit
+username ericksoares privilege 15 secret 49822
+username  privilege 1 secret 49822
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+interface Serial0/1/1
+ip address 201.187.89.21 255.255.255.252
+Description REDE 1
+no shutdown
+exit
+interface Serial0/0/0
+ip address 201.187.89.1 255.255.255.252 
+Description REDE 2
+no shutdown
+exit
+interface Serial0/0/1
+ip address 201.187.89.5 255.255.255.252
+Description REDE 3
+no shutdown
+interface g0/1 
+ip address 192.168.0.1 255.255.224.0
+no shutdown
+exit
+do wr
+
+ROUTER 2
+
+enable
+configure terminal
+hostname R2
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+password SenhadaVTY
+login
+transport input ssh
+exec-timeout 10
+exit
+username ericksoares privilege 15 secret 49822
+username  privilege 1 secret 49822
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+interface Serial0/1/1
+ip address 201.187.89.17 255.255.255.252
+Description REDE 1
+no shutdown
+exit
+interface Serial0/0/0
+ip address 201.187.89.9 255.255.255.252 
+Description REDE 2
+no shutdown
+exit
+interface Serial0/0/1
+ip address 201.187.89.5 255.255.255.252
+Description REDE 3
+no shutdown
+interface g0/1 
+ip address 10.0.0.1 255.0.0.0
+no shutdown
+exit
+do wr
+
+ROUTER 3
+
+enable
+configure terminal
+hostname R3
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+password SenhadaVTY
+login
+transport input ssh
+exec-timeout 10
+exit
+username ericksoares privilege 15 secret 49822
+username  privilege 1 secret 49822
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+interface Serial0/1/1
+ip address 201.187.89.21 255.255.255.252
+Description REDE 1
+no shutdown
+exit
+interface Serial0/0/0
+ip address 201.187.89.9 255.255.255.252 
+Description REDE 2
+no shutdown
+exit
+interface Serial0/0/1
+ip address 201.187.89.13 255.255.255.252
+Description REDE 3
+no shutdown
+interface g0/1 
+ip address 192.168.32.1 255.255.248.0
+exit
+no shutdown
+do wr
+
+ROUTER 4
+
+enable
+configure terminal
+hostname R4
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS"
+enable secret SenhaEnable
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+password SenhadaVTY
+login
+transport input ssh
+exec-timeout 10
+exit
+username ericksoares privilege 15 secret 49822
+username  privilege 1 secret 49822
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+interface Serial0/1/1
+ip address 201.187.89.17 255.255.255.252
+Description REDE 1
+no shutdown
+exit
+interface Serial0/0/0
+ip address 201.187.89.1 255.255.255.252 
+Description REDE 2
+no shutdown
+exit
+interface Serial0/0/1
+ip address 201.187.89.13 255.255.255.252
+Description REDE 3
+no shutdown
+interface g0/1 
+ip address 172.16.0.1 255.240.0.0
+exit
+no shutdown
+do wr
